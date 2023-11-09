@@ -972,27 +972,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "tercel-agent"
-version = "0.1.0"
-dependencies = [
- "tercel-api",
-]
-
-[[package]]
-name = "tercel-api"
-version = "0.1.0"
-dependencies = [
- "actix-web",
-]
-
-[[package]]
-name = "tercel-controller"
-version = "0.1.0"
-dependencies = [
- "tercel-api",
-]
-
-[[package]]
 name = "time"
 version = "0.3.30"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1202,6 +1181,27 @@ name = "windows_x86_64_msvc"
 version = "0.48.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ed94fce61571a4006852b7389a063ab983c02eb1bb37b47f8272ce92d06d9538"
+
+[[package]]
+name = "yangtze-agent"
+version = "0.1.0"
+dependencies = [
+ "yangtze-api",
+]
+
+[[package]]
+name = "yangtze-api"
+version = "0.1.0"
+dependencies = [
+ "actix-web",
+]
+
+[[package]]
+name = "yangtze-controller"
+version = "0.1.0"
+dependencies = [
+ "yangtze-api",
+]
 
 [[package]]
 name = "zerocopy"
