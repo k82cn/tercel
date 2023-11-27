@@ -1,0 +1,12 @@
+apiVersion: network.yangtze.xflops.cn/v1
+kind: Fabric
+metadata:
+  labels:
+    app.kubernetes.io/name: fabric
+    app.kubernetes.io/instance: fabric-sample
+    app.kubernetes.io/part-of: yangtze
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: yangtze
+  name: fabric-sample
+spec:
+  # TODO(user): Add fields here
