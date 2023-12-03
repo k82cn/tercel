@@ -11,9 +11,4 @@
  * limitations under the License.
  */
 
-mod fabrics;
-mod switches;
-
-fn main() {
-    println!("Hello, world!");
-}
+pub mod fabric;

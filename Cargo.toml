@@ -1,7 +1,8 @@
 [workspace]
 
 members = [
-    "api",
+    "apis",
+    "apiserver",
     "controller",
     "agent"
 ]
@@ -15,9 +16,14 @@ authors = ["XFLOPS Engineering <support@xflops.cn>"]
 clap = { version = "4", features = ["derive", "env"] }
 tokio = { version = "1", features = ["full"] }
 tonic = { version = "0.10", features = ["tls"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "*"
+async-trait = {version = "0.1"}
+uuid = {version = "1"}
+tracing = {version = "0.1"}
+tracing-subscriber = {version = "0.3"}
 
 [profile.release]
 debug = true # Enable debuginfo
 debug-assertions = true # Add some extra assurance during development
 overflow-checks = true # Add some extra assurance during development
-

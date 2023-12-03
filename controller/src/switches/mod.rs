@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2023 The xflops Authors.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -11,11 +11,11 @@
  * limitations under the License.
  */
 
- mod discovered;
+mod discovered;
 
- pub enum SwitchState {
+pub enum SwitchState {
     Discovered,
     Provisioning,
     Ready,
     Error,
- }
+}
