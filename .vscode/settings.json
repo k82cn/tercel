@@ -1,5 +1,13 @@
 {
     "rust-analyzer.linkedProjects": [
-        "./controller/Cargo.toml"
-    ]
+        "./controller/Cargo.toml",
+        "./apiserver/Cargo.toml",
+        "./apis/Cargo.toml",
+        "./apis/Cargo.toml",
+        "./apis/Cargo.toml",
+        "./apis/Cargo.toml",
+        "./apis/Cargo.toml",
+        "./apis/Cargo.toml"
+    ],
+    "rust-analyzer.showUnlinkedFileNotification": false
 }

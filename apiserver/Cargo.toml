@@ -1,0 +1,20 @@
+[package]
+name = "yangtze-apiserver"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+actix-web = "4"
+sqlx = { version = "0.7", features = [ "runtime-tokio", "tls-rustls", "postgres", "uuid", "json" ] }
+
+tokio = {workspace = true}
+serde = {workspace = true}
+serde_json = {workspace = true}
+async-trait = {workspace = true}
+uuid = {workspace = true, features= ["v4", "serde"]}
+tracing = {workspace = true}
+tracing-subscriber = {workspace = true}
+
+yangtze-apis = { path = "../apis" }

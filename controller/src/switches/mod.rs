@@ -11,11 +11,11 @@
  * limitations under the License.
  */
 
- mod discovered;
-
- pub enum SwitchState {
+mod discovered;
+pub enum SwitchState {
     Discovered,
     Provisioning,
     Ready,
     Error,
- }
+}
+
