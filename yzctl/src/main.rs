@@ -11,11 +11,36 @@
  * limitations under the License.
  */
 
-use actix_web::{web, App, HttpServer};
+use clap::{Parser, Subcommand};
 
-use yangtze_apis::v1::YangtzeError;
-mod handlers;
-mod storage;
+use yangtze_apis::{
+    v1::{YangtzeError},
+};
+use yangtze_client::{YangtzeClient, YangtzeConfig};
+
+mod helper;
+mod list;
+
+#[derive(Parser)]
+#[command(name = "yzctl")]
+#[command(author = "Klaus Ma <klaus@xflops.cn>")]
+#[command(version = "0.1.0")]
+#[command(about = "Yangtze command line", long_about = None)]
+struct Cli {
+    #[arg(long)]
+    flame_conf: Option<String>,
+
+    #[command(subcommand)]
+    command: Option<Commands>,
+}
+
+#[derive(Subcommand)]
+enum Commands {
+    List {
+        #[arg(short, long)]
+        kind: String,
+    },
+}
 
 #[tokio::main]
 async fn main() -> Result<(), YangtzeError> {
@@ -24,16 +49,15 @@ async fn main() -> Result<(), YangtzeError> {
     tracing::subscriber::set_global_default(subscriber)
         .map_err(|e| YangtzeError::GeneralError(e.to_string()))?;
 
-    let storage = storage::new().await.unwrap();
+    let client = YangtzeClient::new(&YangtzeConfig {
+        address: "http://127.0.0.1:8080".to_string(),
+    })?;
 
-    HttpServer::new(move || {
-        App::new()
-            .app_data(web::Data::new(storage.clone()))
-            .configure(handlers::fabric::config)
-    })
-    .bind(("127.0.0.1", 8080))
-    .map_err(|e| YangtzeError::GeneralError(e.to_string()))?
-    .run()
-    .await
-    .map_err(|e| YangtzeError::GeneralError(e.to_string()))
+    let cli = Cli::parse();
+    match &cli.command {
+        Some(Commands::List { kind }) => list::run(client, kind).await?,
+        _ => helper::run().await?,
+    };
+
+    Ok(())
 }

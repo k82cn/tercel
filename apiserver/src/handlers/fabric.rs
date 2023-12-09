@@ -13,9 +13,8 @@
 use actix_web::{delete, get, patch, post, put, web, Responder};
 use std::sync::Arc;
 
-
 use yangtze_apis::{
-    v1::Metadata,
+    v1::{NamespaceName},
     v1alpha1::fabric::{Fabric, FabricState, FabricStatus},
 };
 
@@ -46,10 +45,10 @@ pub async fn get(
 
 #[post("/fabric")]
 pub async fn list(
-    meta: web::Json<Metadata>,
+    meta: web::Json<NamespaceName>,
     storage: web::Data<Arc<dyn Storage>>,
 ) -> actix_web::Result<impl Responder> {
-    let obj = storage.list(meta.0).await?;
+    let obj = storage.list("fabric", meta.0).await?;
     let fabric: Vec<_> = obj
         .iter()
         .map(Fabric::try_from)

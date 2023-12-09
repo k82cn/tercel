@@ -19,6 +19,7 @@ use sqlx::query_builder::QueryBuilder;
 
 use sqlx::{FromRow, Pool, Postgres, Row};
 use uuid::Uuid;
+use yangtze_apis::v1::NamespaceName;
 
 use crate::storage::{Object, Storage};
 use yangtze_apis::v1::{Metadata, YangtzeError};
@@ -56,27 +57,20 @@ impl Storage for PostgresStorage {
         return Ok(obj);
     }
 
-    async fn list(&self, meta: Metadata) -> Result<Vec<Object>, YangtzeError> {
-        let mut query = QueryBuilder::new("SELECT * FROM objects WHERE 1=1");
+    async fn list(&self, kind: &str, nn: NamespaceName) -> Result<Vec<Object>, YangtzeError> {
+        let mut query = QueryBuilder::new("SELECT * FROM objects WHERE ");
 
-        if meta.uuid.is_some() {
-            query.push(" AND id= ");
-            query.push_bind(meta.uuid);
-        }
+        query.push(" kind= ");
+        query.push_bind(kind);
 
-        if !meta.kind.is_empty() {
-            query.push(" AND kind= ");
-            query.push_bind(meta.kind);
-        }
-
-        if !meta.namespace.is_empty() {
+        if let Some(ns) = nn.namespace {
             query.push(" AND namespace= ");
-            query.push_bind(meta.namespace);
+            query.push_bind(ns);
         }
 
-        if !meta.name.is_empty() {
+        if let Some(name) = nn.name {
             query.push(" AND name= ");
-            query.push_bind(meta.name);
+            query.push_bind(name);
         }
 
         let obj = query

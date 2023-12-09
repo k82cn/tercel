@@ -8,4 +8,5 @@ edition = "2021"
 [dependencies]
 
 yangtze-apis = { path = "../apis" }
+yangtze-client = { path = "../client" }
 
