@@ -12,7 +12,3 @@
  */
 
 pub mod fabric;
-
-
-
-

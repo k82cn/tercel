@@ -13,7 +13,7 @@
 
 use serde::{Deserialize, Serialize};
 use std::fmt::{Display, Formatter};
-use tracing::{error};
+use tracing::error;
 
 use actix_web::{error, http::StatusCode, Result};
 
@@ -42,6 +42,8 @@ pub enum YangtzeError {
     GeneralError(String),
     #[error("{0}")]
     RestfulError(String),
+    #[error("{0}")]
+    InvalidConfig(String),
 }
 
 impl From<serde_json::Error> for YangtzeError {
@@ -56,3 +58,16 @@ impl error::ResponseError for YangtzeError {
         StatusCode::INTERNAL_SERVER_ERROR
     }
 }
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct NamespaceName {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub namespace: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
+}
+
+pub const ALL: NamespaceName = NamespaceName {
+    namespace: None,
+    name: None,
+};

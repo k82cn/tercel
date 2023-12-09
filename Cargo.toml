@@ -4,7 +4,9 @@ members = [
     "apis",
     "apiserver",
     "controller",
-    "agent"
+    "agent",
+    "client",
+    "yzctl",
 ]
 
 [workspace.package]

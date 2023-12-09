@@ -15,8 +15,7 @@ use async_trait::async_trait;
 use std::fmt::{Display, Formatter};
 use std::sync::Arc;
 
-
-use yangtze_apis::v1::{Metadata, YangtzeError};
+use yangtze_apis::v1::{Metadata, NamespaceName, YangtzeError};
 
 mod db;
 
@@ -29,7 +28,7 @@ pub struct Object {
 #[async_trait]
 pub trait Storage: Send + Sync + 'static {
     async fn get(&self, id: String) -> Result<Object, YangtzeError>;
-    async fn list(&self, meta: Metadata) -> Result<Vec<Object>, YangtzeError>;
+    async fn list(&self, kind: &str, nn: NamespaceName) -> Result<Vec<Object>, YangtzeError>;
     async fn delete(&self, id: String) -> Result<Object, YangtzeError>;
     async fn create(&self, o: Object) -> Result<Object, YangtzeError>;
     async fn update(&self, o: Object) -> Result<Object, YangtzeError>;

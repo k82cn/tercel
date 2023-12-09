@@ -13,9 +13,7 @@
 
 use actix_web::{web, App, HttpServer};
 
-use yangtze_apis::{
-    v1::{YangtzeError},
-};
+use yangtze_apis::v1::YangtzeError;
 mod handlers;
 mod storage;
 
