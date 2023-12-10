@@ -12,7 +12,7 @@
  */
 
 use serde::{Deserialize, Serialize};
-use std::fmt::{Display, Formatter};
+use std::fmt::{self, Display, Formatter};
 use tracing::error;
 
 use actix_web::{error, http::StatusCode, Result};
@@ -71,3 +71,15 @@ pub const ALL: NamespaceName = NamespaceName {
     namespace: None,
     name: None,
 };
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct VersionKind {
+    pub version: &'static str,
+    pub kind: &'static str,
+}
+
+impl fmt::Display for VersionKind {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}/{}", self.version, self.kind)
+    }
+}

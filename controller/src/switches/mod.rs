@@ -11,10 +11,27 @@
  * limitations under the License.
  */
 
-mod discovered;
-pub enum SwitchState {
-    Discovered,
-    Provisioning,
-    Ready,
-    Error,
+use async_trait::async_trait;
+
+use yangtze_apis::{
+    v1::{VersionKind, YangtzeError},
+    v1alpha1::fabric::{self, Fabric},
+};
+use yangtze_client::YangtzeClient;
+
+use crate::framework::Controller;
+
+#[derive(Clone)]
+pub struct SwitchController {}
+
+#[async_trait]
+impl Controller<Fabric> for SwitchController {
+    async fn execute(&self, _client: YangtzeClient, _f: Fabric) -> Result<(), YangtzeError> {
+        tracing::info!("switch controller");
+        Ok(())
+    }
+
+    fn get_version_kind(&self) -> VersionKind {
+        fabric::VERSION_KIND.clone()
+    }
 }

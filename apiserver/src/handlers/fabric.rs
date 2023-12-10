@@ -14,15 +14,15 @@ use actix_web::{delete, get, patch, post, put, web, Responder};
 use std::sync::Arc;
 
 use yangtze_apis::{
-    v1::{NamespaceName},
-    v1alpha1::fabric::{Fabric, FabricState, FabricStatus},
+    v1::NamespaceName,
+    v1alpha1::fabric::{Fabric, FabricState, FabricStatus, VERSION_KIND},
 };
 
 use crate::storage::{Object, Storage};
 use yangtze_apis::v1::YangtzeError;
 
 pub fn config(conf: &mut web::ServiceConfig) {
-    let scope = web::scope("/v1alpha1")
+    let scope = web::scope(VERSION_KIND.version)
         .service(get)
         .service(list)
         .service(create)
@@ -48,7 +48,7 @@ pub async fn list(
     meta: web::Json<NamespaceName>,
     storage: web::Data<Arc<dyn Storage>>,
 ) -> actix_web::Result<impl Responder> {
-    let obj = storage.list("fabric", meta.0).await?;
+    let obj = storage.list(VERSION_KIND.kind, meta.0).await?;
     let fabric: Vec<_> = obj
         .iter()
         .map(Fabric::try_from)
@@ -80,8 +80,7 @@ pub async fn create(
             total: 0,
             available: 0,
         }),
-        meta_data: fabric.0.meta_data,
-        spec: fabric.0.spec,
+        ..fabric.0
     };
     let obj = Object::try_from(fabric)?;
     let obj = storage.create(obj).await?;

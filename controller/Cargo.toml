@@ -10,3 +10,11 @@ edition = "2021"
 yangtze-apis = { path = "../apis" }
 yangtze-client = { path = "../client" }
 
+async-trait = {workspace = true}
+serde = {workspace = true}
+serde_json = {workspace = true}
+tracing = {workspace = true}
+tracing-subscriber = {workspace = true}
+tokio = {workspace = true}
+
+futures = "0.3"
