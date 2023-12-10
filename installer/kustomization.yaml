@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - yangtze-system.yaml
+  - yangtze-controller.yaml
+  - yangtze-apiserver.yaml
+  - yangtze-apiserver-svc.yaml
+  - yangtze-console.yaml
+configMapGenerator:
+  - name: flame-conf
+    files:
+      - flame-conf.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yangtze-console
+  labels:
+    app.kubernetes.io/name: yangtze-console
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: yangtze-console
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: yangtze-console
+    spec:
+      containers:
+      - name: console
+        image: registry.minikube/yangtze-console:latest
+        env:
+        - name: RUST_LOG
+          value: "info"
+        volumeMounts:
+        - name: flame-conf
+          mountPath: /root/.flame
+      volumes:
+      - name: flame-conf
+        configMap:
+          name: flame-conf

@@ -1,0 +1,41 @@
+apiVersion: skaffold/v4beta2
+kind: Config
+metadata:
+  name: flame
+build:
+  tagPolicy:
+    sha256: {}
+  local:
+    useBuildkit: true
+    useDockerCLI: true
+  insecureRegistries:
+    - "registry.minikube"
+  artifacts:
+    - image: registry.minikube/yangtze-apiserver
+      docker:
+        dockerfile: docker/Dockerfile.apiserver
+      sync:
+        infer:
+          - "apiserver"
+    - image: registry.minikube/yangtze-controller
+      docker:
+        dockerfile: docker/Dockerfile.yangtze-controller
+      sync:
+        infer:
+          - "controller"
+    - image: registry.minikube/yangtze-console
+      docker:
+        dockerfile: docker/Dockerfile.console
+      sync:
+        infer:
+          - "yzctl"
+manifests:
+  kustomize:
+    paths:
+      - installer
+
+deploy:
+  statusCheckDeadlineSeconds: 300
+  tolerateFailuresUntilDeadline: true
+  kubectl:
+    defaultNamespace: yangtze-system
