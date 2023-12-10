@@ -36,6 +36,7 @@ pub struct YangtzeConfig {
     pub address: String,
 }
 
+#[derive(Clone)]
 pub struct YangtzeClient {
     address: String,
     version: Option<String>,

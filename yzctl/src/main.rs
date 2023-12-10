@@ -13,9 +13,7 @@
 
 use clap::{Parser, Subcommand};
 
-use yangtze_apis::{
-    v1::{YangtzeError},
-};
+use yangtze_apis::v1::YangtzeError;
 use yangtze_client::{YangtzeClient, YangtzeConfig};
 
 mod helper;

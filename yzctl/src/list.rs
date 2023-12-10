@@ -13,26 +13,37 @@
 
 use yangtze_apis::{
     v1::{YangtzeError, ALL},
-    v1alpha1::fabric::Fabric,
+    v1alpha1::fabric::{Fabric, FabricState},
 };
-use yangtze_client::{YangtzeClient};
+use yangtze_client::YangtzeClient;
 
-pub async fn run(client: YangtzeClient, kind: &String) -> Result<(), YangtzeError> {
-    let client = client.version("v1alpha1").kind(kind);
+pub async fn run(client: YangtzeClient, kind: &str) -> Result<(), YangtzeError> {
+    let vk = yangtze_apis::get_version_kind(&kind.to_lowercase())
+        .ok_or(YangtzeError::InvalidConfig("unknown kind".to_string()))?;
+    let client = client.version(vk.version).kind(vk.kind);
     let fabric_list = client.list::<Fabric>(ALL).await?;
 
-    println!(" {:<45}| {:<20}| {:<10}", "UUID", "Namespace", "Name",);
-    for _ in 1..80 {
+    println!(
+        " {:<45}| {:<20}| {:<10}| {:<15}",
+        "UUID", "Namespace", "Name", "State"
+    );
+    for _ in 1..100 {
         print!("-");
     }
     println!();
 
     for f in fabric_list {
+        let state = match f.status {
+            Some(s) => s.state,
+            None => FabricState::Initializing,
+        };
+
         println!(
-            " {:<45}| {:<20}| {:<10}",
+            " {:<45}| {:<20}| {:<10}| {:<15}",
             f.meta_data.uuid.unwrap().to_string(),
             f.meta_data.namespace,
-            f.meta_data.name
+            f.meta_data.name,
+            state,
         );
     }
 

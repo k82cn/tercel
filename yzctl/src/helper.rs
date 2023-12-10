@@ -11,8 +11,6 @@
  * limitations under the License.
  */
 
-
-
 use yangtze_apis::v1::YangtzeError;
 
 pub async fn run() -> Result<(), YangtzeError> {

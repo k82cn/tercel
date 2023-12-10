@@ -13,3 +13,12 @@
 
 pub mod v1;
 pub mod v1alpha1;
+
+use v1::VersionKind;
+
+pub fn get_version_kind(vk: &str) -> Option<VersionKind> {
+    match vk {
+        "fabric" => Some(v1alpha1::fabric::VERSION_KIND),
+        _ => None,
+    }
+}

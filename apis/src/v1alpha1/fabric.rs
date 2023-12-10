@@ -11,9 +11,9 @@
  * limitations under the License.
  */
 
-use std::fmt::{Display, Formatter};
+use std::fmt::{self, Display, Formatter};
 
-use crate::v1::Metadata;
+use crate::v1::{Metadata, VersionKind};
 
 use serde::{Deserialize, Serialize};
 
@@ -25,6 +25,18 @@ pub enum FabricState {
     Error,
     Deleting,
     Deleted,
+}
+
+impl fmt::Display for FabricState {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            FabricState::Initializing => write!(f, "Initializing"),
+            FabricState::Ready => write!(f, "Ready"),
+            FabricState::Error => write!(f, "Error"),
+            FabricState::Deleting => write!(f, "Deleting"),
+            FabricState::Deleted => write!(f, "Deleted"),
+        }
+    }
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -54,3 +66,8 @@ impl Display for Fabric {
         write!(writer, "{0}", self.meta_data.name)
     }
 }
+
+pub const VERSION_KIND: VersionKind = VersionKind {
+    version: "v1alpha1",
+    kind: "fabric",
+};

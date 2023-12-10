@@ -11,9 +11,30 @@
  * limitations under the License.
  */
 
+use yangtze_apis::v1::YangtzeError;
+use yangtze_client::YangtzeConfig;
+
 mod fabrics;
+mod framework;
 mod switches;
 
-fn main() {
-    println!("Hello, world!");
+#[tokio::main]
+async fn main() -> Result<(), YangtzeError> {
+    let subscriber = tracing_subscriber::FmtSubscriber::new();
+    // use that subscriber to process traces emitted after this point
+    tracing::subscriber::set_global_default(subscriber)
+        .map_err(|e| YangtzeError::GeneralError(e.to_string()))?;
+
+    let config = YangtzeConfig {
+        address: "http://127.0.0.1:8080".to_string(),
+    };
+
+    let mut rt = framework::runtime(config);
+
+    rt = rt.register(fabrics::FabricController {}).await;
+    rt = rt.register(switches::SwitchController {}).await;
+
+    rt.run().await;
+
+    Ok(())
 }
