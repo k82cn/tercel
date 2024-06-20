@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: yangtze-apiserver
+spec:
+  selector:
+    app.kubernetes.io/name: yangtze-apiserver
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
